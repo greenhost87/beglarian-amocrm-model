@@ -37,8 +37,8 @@ case class AmoCrmContactsResponse(
 
   private[this] def find(fieldCode: String): Option[String] = {
     customFieldsValues.find(_.fieldCode.contains(fieldCode)).flatMap(_.values.headOption.flatMap(_.value)).flatMap {
-      case Left(_)      => None
-      case Right(value) => Some(value.trim())
+      case value: String => Some(value.trim())
+      case _     => None
     }
   }
 
@@ -48,9 +48,8 @@ case class AmoCrmContactsResponse(
         cfv.values
     }.flatten.flatMap { value =>
       value.value match {
-        case Some(Right(v)) => Some(v.trim)
-        case Some(Left(_))  => None
-        case None           => None
+        case Some(v: String) => Some(v.trim)
+        case _  => None
       }
     }.toSet
   }

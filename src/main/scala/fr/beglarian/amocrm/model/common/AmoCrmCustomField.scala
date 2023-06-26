@@ -13,7 +13,7 @@ object AmoCrmCustomField {
       fieldName = None,
       values = Seq(
         AmoCrmCustomFieldValue(
-          value = Some(Right(value)),
+          value = Some(value),
           enumCode = Some(Right("WORK"))
         )
       ),
@@ -26,7 +26,7 @@ object AmoCrmCustomField {
       fieldName = None,
       values = Seq(
         AmoCrmCustomFieldValue(
-          Some(Right(value)),
+          Some(value),
           Some(Right("WORK"))
         )
       ),

@@ -48,8 +48,30 @@ object AmoJsonProtocol extends DefaultJsonProtocol {
   implicit val amoCrmLinkFormat: RootJsonFormat[AmoCrmLink] =
     jsonFormat(AmoCrmLink.apply(_, _), "to_entity_id", "to_entity_type")
 
+
+  implicit val amoCrmCustomFieldValueValueFormat: RootJsonFormat[Option[Long | String | Boolean]] = new RootJsonFormat[Option[Long | String | Boolean]] {
+    override def write(obj: Option[Long | String | Boolean]): JsValue = {
+      obj match {
+        case Some(value: Long) => JsNumber(value)
+        case Some(value: String) => JsString(value)
+        case Some(value: Boolean) => JsBoolean(value)
+        case None => JsNull
+      }
+    }
+
+    override def read(json: JsValue): Option[Long | String | Boolean] = {
+      json match
+        case JsString(value) => Some(value)
+        case JsNumber(value) => Some(value.longValue)
+        case boolean: JsBoolean => Some(boolean.value)
+        case _ => None
+    }
+  }
+
+
   implicit val amoCrmCustomFieldValueFormat: RootJsonFormat[AmoCrmCustomFieldValue] =
     jsonFormat(AmoCrmCustomFieldValue.apply(_, _, _), "value", "enum_code", "enum_id")
+
   implicit val amoCrmCustomFieldFormat: RootJsonFormat[AmoCrmCustomField] =
     jsonFormat(
       AmoCrmCustomField.apply(_, _, _, _),
