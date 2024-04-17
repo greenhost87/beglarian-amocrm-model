@@ -1,6 +1,6 @@
 package fr.beglarian.amocrm.model.task.create
 
-import java.time.{LocalDateTime, ZonedDateTime}
+import java.time.ZonedDateTime
 
 case class AmoCrmTaskCreateRequest(
     entity_id: Int,

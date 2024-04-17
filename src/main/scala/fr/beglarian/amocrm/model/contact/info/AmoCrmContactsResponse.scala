@@ -8,8 +8,8 @@ case class AmoCrmContactsResponse(
     lastName: String,
     customFieldsValues: Seq[AmoCrmCustomField]
 ) {
-  private[this] val phoneFieldCode = "PHONE"
-  private[this] val emailFieldCode = "EMAIL"
+  private val phoneFieldCode = "PHONE"
+  private val emailFieldCode = "EMAIL"
 
   def phone: Option[String] = {
     find(phoneFieldCode).map(_.filter(_.isDigit))
@@ -35,14 +35,14 @@ case class AmoCrmContactsResponse(
     findAllRaw(emailFieldCode)
   }
 
-  private[this] def find(fieldCode: String): Option[String] = {
+  private def find(fieldCode: String): Option[String] = {
     customFieldsValues.find(_.fieldCode.contains(fieldCode)).flatMap(_.values.headOption.flatMap(_.value)).flatMap {
       case value: String => Some(value.trim())
       case _     => None
     }
   }
 
-  private[this] def findAll(fieldCode: String): Set[String] = {
+  private def findAll(fieldCode: String): Set[String] = {
     customFieldsValues.collect {
       case cfv if cfv.fieldCode.contains(fieldCode) =>
         cfv.values
@@ -54,7 +54,7 @@ case class AmoCrmContactsResponse(
     }.toSet
   }
 
-  private[this] def findAllRaw(fieldCode: String): Seq[AmoCrmCustomField] = {
+  private def findAllRaw(fieldCode: String): Seq[AmoCrmCustomField] = {
     customFieldsValues.filter(_.fieldCode.contains(fieldCode))
   }
 }
